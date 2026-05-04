@@ -127,13 +127,19 @@ export class PiSessionManager {
       ? SessionManager.continueRecent(dir, dir)  // Resume last session after restart/crash
       : SessionManager.create(dir, dir);           // Fresh session for reset
 
+    // Use process.cwd() as the project root so pi can discover .pi/ config
+    // files (e.g. .pi/APPEND_SYSTEM.md). The daemon is spawned with cwd set
+    // to the project root. The session data is stored separately via
+    // sessionDir passed to SessionManager.
+    const projectRoot = process.cwd();
+
     const result: CreateAgentSessionResult = await createAgentSession({
       sessionManager,
       authStorage,
       modelRegistry,
       model,
       thinkingLevel,
-      cwd: this.sessionDir,
+      cwd: projectRoot,
     });
 
     this.session = result.session;
