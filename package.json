@@ -1,0 +1,36 @@
+{
+  "type": "module",
+  "name": "magpi",
+  "version": "0.1.0",
+  "description": "Open-source Discord bot extension for Pi coding agent — bridges Pi to a Discord channel with persistent sessions, @mentions, DMs, file uploads, and reaction context",
+  "license": "MIT",
+  "keywords": [
+    "pi-package",
+    "discord",
+    "coding-agent"
+  ],
+  "pi": {
+    "extensions": [
+      "./src/extension.ts"
+    ]
+  },
+  "scripts": {
+    "start": "nohup node --import tsx src/daemon.ts >> ~/.magpi/daemon.log 2>&1 &",
+    "stop": "kill -s TERM $(cat ~/.magpi/daemon.pid) 2>/dev/null || echo 'Daemon not running'",
+    "reload": "npm stop && npm start",
+    "status": "ps aux | grep node | grep -v grep",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@mariozechner/pi-coding-agent": "^0.65.0",
+    "discord.js": "^14.25.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.8.0",
+    "vitest": "^4.1.5"
+  }
+}
